@@ -4,7 +4,8 @@ The following steps shows how I properly cleaning and formatted Fifa21 data set
 ---
 - Get an overview of the dataset ordered by the Ratings in descending pattern
 ```sql
-Select *
+Select 
+	*
 From PortfolioProject..Fifa21
 Order by Ratings Desc
 ```
@@ -21,7 +22,9 @@ exec sp_rename 'Fifa21.Rating','Ratings'
 * I found out that some values were displayed in cms while others were displayed in Feet-Inches format
 
 ```sql
-Select Distinct(Height), Count(Height)
+Select 
+	Distinct(Height), 
+	Count(Height)
 From PortfolioProject..Fifa21
 Group by Height
 ```
@@ -31,7 +34,8 @@ Group by Height
 * Select Rows in the height column where the values are in Feet-Inches format
 
 ```sql
-Select Height
+Select 
+	Height
 From PortfolioProject..Fifa21
 Where Height like '%''%'
 ```
@@ -39,7 +43,9 @@ Where Height like '%''%'
 - I used the CharIndex function to select the position of the Feet values in the substring
 
 ```sql
-Select Height, CharIndex('''', Height) - 1
+Select 
+	Height, 
+	CharIndex('''', Height) - 1
 From PortfolioProject..Fifa21
 Where Height like '%''%'
 ```
@@ -47,7 +53,9 @@ Where Height like '%''%'
 - I also used the CharIndex function to select the position of the Inches values in the substring
 
 ```sql
-Select Height, CharIndex('''', Height) + 1
+Select 
+	Height,
+	CharIndex('''', Height) + 1
 From PortfolioProject..Fifa21
 Where Height like '%''%'
 ```
@@ -55,7 +63,9 @@ Where Height like '%''%'
 - I used the Substring and Charindex function to select the Feet values in the substring
 
 ```sql
-Select Height, Substring(Height, 1, Charindex('''', Height) - 1)
+Select 
+	Height, 
+	Substring(Height, 1, Charindex('''', Height) - 1)
 From PortfolioProject..Fifa21
 Where Height like '%''%'
 ```
@@ -63,7 +73,9 @@ Where Height like '%''%'
 - Select the Inches values using the Substring, Charindex and Len functions
 
 ```sql
-Select Height, Substring(Height, Charindex('''', Height) + 1, Len(Height) - Charindex('''', Height) - 1)
+Select 
+	Height, 
+	Substring(Height, Charindex('''', Height) + 1, Len(Height) - Charindex('''', Height) - 1)
 From PortfolioProject..Fifa21
 Where Height like '%''%'
 ```
@@ -71,7 +83,10 @@ Where Height like '%''%'
 - Convert the Feet and Inches values to Int data type
 
 ```sql
-Select Height, Cast(Substring(Height, 1, Charindex('''', Height) - 1) as int) as HeightFeet, Cast(Substring(Height, Charindex('''', Height) + 1, Len(Height) - Charindex('''', Height) - 1) as int) as HeightInches
+Select 
+	Height, 
+	Cast(Substring(Height, 1, Charindex('''', Height) - 1) as int) as HeightFeet, 
+	Cast(Substring(Height, Charindex('''', Height) + 1, Len(Height) - Charindex('''', Height) - 1) as int) as HeightInches
 From PortfolioProject..Fifa21
 Where Height like '%''%'
 ```
